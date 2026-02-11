@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 30px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    background: #fff;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+}
+
+.navigation a {
+   position: relative;
+    font-size: 1.1em;
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 15px;
+}
+
+.navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #000000;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s;
+}
+
+.navigation a:hover:after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.navigation .btnlogin-popup {
+    width: 100px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #000000;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #000000;
+    font-weight: 500;
+    margin-left: 0px;
+    transition: .5s;
+
+}
+
+.navigation .btnlogin-popup:hover {
+    background: #000000;
+    color: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 10px;
+}
+
+/* Form  */
+form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+input[type="text"],
+textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- Diary Grid Container --- */
+.diary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+
+.polaroid-tile {
+    background: white;
+    padding: 15px 15px 40px 15px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    transform: rotate(-2deg);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+
+}
+
+.polaroid-tile img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #f0f0f0;
+}
+
+.polaroid-tile:nth-child(even) {
+    transform: rotate(2deg);
+}
+
+.polaroid-tile:nth-child(3n) {
+    transform: rotate(-1.5deg) translateY(5px);
+}
+
+.polaroid-tile:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+
+.polaroid-tile h3 {
+    font-family: 'Brush Script MT', cursive, sans-serif;
+    margin: 10px 0 5px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.polaroid-tile small {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+
+.logo {
+    height: 50px;
+    width: 90px;
+    margin-left: 20px;
+        
+
+}
+
+
+
+
+
+@media screen and (max-width: 480px) {
+    header {
+        padding: 5px 10px; /* Tighter padding for mobile */
+    }
+
+    .logo {
+        height: 35px; /* Scale down logo for mobile */
+        width: auto;
+        margin-left: 5px;
+    }
+
+    .navigation a {
+        font-size: 0.85em; /* Smaller text to fit the row */
+        margin-left: 8px;
+        margin-right: 0;
+    }
+
+    .navigation .btnlogin-popup {
+        width: 70px; /* Smaller button width */
+        height: 32px; /* Smaller button height */
+        font-size: 0.85em;
+        margin-left: 8px;
+    }
+    
+    body {
+        padding-top: 80px; /* Push content down so it doesn't hide under header */
+    }
+}
+
+

@@ -1,0 +1,271 @@
+header {
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 30px;
+  /* Reduced side padding slightly */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+  background: #fff;
+}
+
+.navigation {
+ display: flex;
+        align-items: center;
+        gap: 8px;
+}
+
+.navigation a {
+  position: relative;
+  font-size: 1.1em;
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 15px;
+}
+
+.navigation a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: #000000;
+  border-radius: 5px;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform .5s;
+}
+
+.navigation a:hover:after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.navigation .btnlogin-popup {
+  width: 100px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid #000000;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #000000;
+  font-weight: 500;
+  margin-left: 0px;
+  transition: .5s;
+
+}
+
+.navigation .btnlogin-popup:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+
+/* Diary Aesthetic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  line-height: 1.8;
+  color: #444;
+  background-color: #faf9f6;
+  padding-top: 80px;
+  /* Space for fixed navigation */
+}
+
+/* Fixed Navigation Styling */
+.main-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: rgba(250, 249, 246, 0.95);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #2c3e50;
+  margin-left: 20px;
+  font-weight: bold;
+  font-family: sans-serif;
+  /* Cleaner look for nav */
+  font-size: 0.9rem;
+}
+
+.btnlogin-popup {
+  padding: 8px 20px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btnlogin-popup:hover {
+  background: #576574;
+}
+
+/* Content Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #dcdde1;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.diary-section {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+  border-left: 5px solid #a4b0be;
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #576574;
+  font-style: italic;
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.feature-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.feature-item {
+  background: #f1f2f6;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: #2f3542;
+  font-family: sans-serif;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #95a5a6;
+  margin-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Mobile Friendly */
+@media (max-width: 600px) {
+  .main-nav {
+    padding: 15px 20px;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .diary-section {
+    padding: 20px;
+  }
+}
+
+
+/* This targets the container holding your nav items */
+nav,
+.header-container {
+  display: flex;
+  flex-direction: row;
+  /* Keeps them in a line */
+  justify-content: center;
+  /* Centers the whole group */
+  align-items: center;
+  /* Vertically aligns them */
+  gap: 15px;
+  /* Adds space between items so they don't touch */
+  padding: 10px;
+  flex-wrap: wrap;
+  /* If the screen is too small, it moves the button to the next line instead of overlapping */
+}
+
+/* Specific fix for the login button box */
+.login-button {
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid #000;
+  text-decoration: none;
+  /* Remove any "position: absolute" if you have it! */
+}
+
+
+
+
+
+
+@media screen and (max-width: 480px) {
+  header {
+    padding: 5px 10px;
+    /* Tighter padding for mobile */
+  }
+
+  .logo {
+    height: 35px;
+    /* Scale down logo for mobile */
+    width: auto;
+    margin-left: 5px;
+  }
+
+  .navigation a {
+    font-size: 0.85em;
+    /* Smaller text to fit the row */
+    margin-left: 8px;
+    margin-right: 0;
+  }
+
+  .navigation .btnlogin-popup {
+    width: 70px;
+    /* Smaller button width */
+    height: 32px;
+    /* Smaller button height */
+    font-size: 0.85em;
+    margin-left: 8px;
+  }
+
+  body {
+    padding-top: 80px;
+    /* Push content down so it doesn't hide under header */
+  }
+}

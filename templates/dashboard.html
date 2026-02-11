@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+
+<body>
+    <div class="hero">
+        <nav class="nav">
+            <img src="/static/dash_icon/open-diary.png" class="logo">
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">Feacher</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">content</a></li>
+            </ul>
+            <img src="/static/dash_icon/man.png" class="User-pic" onclick="togglem()">
+
+            <div class="sub-menu-wrap" id="submenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="/static/dash_icon/man.png" alt="User Profile">
+                        <h3 id="UserName"></h3>
+                    </div>
+                    <hr>
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="/static/dash_icon/profile.png">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="/static/dash_icon/setting.png">
+                        <p>Settings</p>
+                        <span>></span>
+                    </a> <a href="#" class="sub-menu-link">
+                        <img src="/static/dash_icon/help.png">
+                        <p>Help</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" id="logoutBtn" class="sub-menu-link">
+                        <img src="/static/dash_icon/logout.png">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div class="journal-container">
+    <h1 class="journal-title">Digital-Diary</h1>
+    <form class="journal-form">
+        <div class="form-row">
+            <div class="form-group bg-light">
+                <label>Entry Title</label>
+                <div class="name-inputs">
+                    
+                    <div>
+                        <input type="text" id="last-name" placeholder="Entry Title">
+                        <small>Title</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" placeholder="MM-DD-YYYY">
+                <small>Date</small>
+            </div>
+        </div>
+
+        
+
+        <div class="form-group full-width">
+            <label>Description</label>
+            <textarea placeholder="Type here..."></textarea>
+        </div>
+        <div class="save-container">
+    <button type="button" class="btn-save" onclick="saveAsPolaroid()">Save to Gallery</button>
+</div>
+
+<div id="polaroid-gallery" class="gallery-grid"></div>
+    </form>
+</div>
+    </div>
+
+
+
+    <script src="/static/dashboard.js"></script>
+
+</body>
+
+</html>

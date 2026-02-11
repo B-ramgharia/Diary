@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <img src="/static/dash_icon/open-diary.png" class="logo">
+    <nav class="navigation">
+        <!-- <a href="/HOME">HOME</a> -->
+        <a href="/ABOUT">ABOUT</a>
+        <a href="/SERVICES">SERVICES</a>
+        <a href="/login"><button class="btnlogin-popup">login</button></a>
+    </nav>
+</header>
+
+<head>
+    <title>Digital Diary</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background-image: url(/static/images.jpg);
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>My Digital Diary</h1>
+    <script src="/static/script.js"></script>
+    <style>
+        .form-container {
+            background-image: url();
+            border-image-width: 3px;
+        }
+    </style>
+    <form action="/" method="POST">
+        <input type="text" class="form-control" name="Entry Title" id="entryTitle" placeholder="Entry Title">
+        <textarea id="entryContent" name="desc" placeholder="Write your heart out..."></textarea>
+        <a href="/login" id="vaultLink">
+        <button type="button" id="saveBtn">Lock in Vault</button></a>
+
+        <div id="diaryContainer" class="folder-grid">
+        </div>
+    </form>
+
+
+    <div class="diary-grid">
+
+        <div class="polaroid-tile">
+            <img src="/static/panjab logo.jpg" alt="Diary Image">
+            <h3>Ancient civilizations</h3>
+            <small>January 13, 2026</small>
+        </div>
+
+        <div class="polaroid-tile">
+            <img src="/static/delhi logo" alt="Diary Image">
+            <h3>City of Cities</h3>
+            <small>January 13, 2026</small>
+        </div>
+
+        <div class="polaroid-tile">
+            <img src="/static/haryana" alt="Diary Image">
+            <h3>Haryana's history</h3>
+            <small>January 13, 2026</small>
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>
