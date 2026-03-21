@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 pt-12 text-center">
+    <motion-div initial-scale="0.9" animate-scale="1" class="space-y-8 animate-float">
+        <h1 class="text-6xl md:text-8xl font-black heading-gradient tracking-tighter leading-none mb-6">
+            Capturing your <br/> life's <span class="text-white italic">reflections.</span>
+        </h1>
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            A modern, full-stack diary application built with Python & Flask. 
+            Capture your thoughts in a beautifully designed, secure space.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+            <a href="/register" class="w-full sm:w-auto px-10 py-5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-xl shadow-2xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center space-x-3">
+                <span>Get Started Now</span>
+                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+            </a>
+            <a href="/login" class="w-full sm:w-auto px-10 py-5 glass hover:bg-white/10 text-white rounded-2xl font-bold text-xl transition-all flex items-center justify-center space-x-3">
+                <span>Login</span>
+            </a>
+        </div>
+    </motion-div>
+
+    <!-- Visual Deck -->
+    <div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+        <div class="p-8 glass rounded-3xl space-y-4 border-indigo-500/20">
+            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-6 h-6 text-indigo-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Secure by Design</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">JWT authentication and encrypted sessions keep your personal reflections private and protected.</p>
+        </div>
+        <div class="p-8 glass rounded-3xl space-y-4 border-purple-500/20">
+            <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
+                <i data-lucide="sparkles" class="w-6 h-6 text-purple-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Premium Experience</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">A sleek, glassmorphism interface with fluid animations designed to inspire your writing process.</p>
+        </div>
+        <div class="p-8 glass rounded-3xl space-y-4 border-pink-500/20">
+            <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center">
+                <i data-lucide="layout" class="w-6 h-6 text-pink-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Polaroid Grid</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Visualize your journey through cards that capture the essence of your memories at a single glance.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

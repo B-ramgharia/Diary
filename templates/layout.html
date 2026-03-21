@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Diary - Secure & Premium Personal Journal{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .heading-gradient { background: linear-gradient(to right, #818cf8, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .bg-gradient-mesh { background: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(219, 39, 119, 0.15) 0px, transparent 50%), radial-gradient(at 50% 100%, rgba(124, 58, 237, 0.1) 0px, transparent 50%); }
+        .polaroid { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .polaroid:hover { transform: translateY(-8px) rotate(-1deg) scale(1.02); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.2); }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen relative overflow-x-hidden bg-gradient-mesh">
+    
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass px-6 py-3 rounded-2xl shadow-xl">
+            <a href="/" class="text-2xl font-black heading-gradient tracking-tighter hover:opacity-80 transition-opacity">Diary.</a>
+            
+            <div class="flex items-center space-x-6">
+                {% if session.get('user_id') %}
+                    <a href="/dashboard" class="text-sm font-medium hover:text-indigo-400 transition-colors">Dashboard</a>
+                    <div class="relative group">
+                        <button class="flex items-center space-x-3 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-xl transition-all">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">
+                                {{ session.get('username', 'U')[0] | upper }}
+                            </div>
+                            <span class="hidden sm:inline text-sm font-medium text-slate-200">{{ session.get('username') }}</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+                        </button>
+                        <!-- Dropdown -->
+                        <div class="absolute right-0 mt-3 w-56 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-0 translate-y-2 z-50">
+                            <a href="/logout" class="flex items-center space-x-3 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 rounded-xl transition-colors">
+                                <i data-lucide="log-out" class="w-4 h-4 text-slate-400"></i>
+                                <span>Logout</span>
+                            </a>
+                            <div class="h-px bg-white/5 my-1 mx-2"></div>
+                            <button onclick="document.getElementById('deleteModal').classList.remove('hidden')" class="w-full flex items-center space-x-3 px-4 py-3 text-sm text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                <span>Delete Account</span>
+                            </button>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="/login" class="text-slate-400 hover:text-white transition-colors text-sm font-medium">Login</a>
+                    <a href="/register" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-600/20 transition-all active:scale-95">Get Started</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="pt-24 pb-12">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="max-w-7xl mx-auto px-6 mb-6">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-xl border {% if category == 'error' %}bg-rose-500/10 border-rose-500/20 text-rose-400{% else %}bg-emerald-500/10 border-emerald-500/20 text-emerald-400{% endif %} flex items-center space-x-3">
+                            <i data-lucide="{% if category == 'error' %}alert-circle{% else %}check-circle{% endif %}" class="w-5 h-5"></i>
+                            <span class="text-sm font-medium">{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Lucide Init -->
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
