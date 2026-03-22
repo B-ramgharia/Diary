@@ -10,7 +10,14 @@ app.secret_key = os.getenv("SECRET_KEY", "your-premium-secret-key-12345")
 
 # Database Configuration
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'diary.db')
+
+# Use DATABASE_URL from environment for production, fallback to SQLite for local development
+db_url = os.getenv("DATABASE_URL")
+if db_url and db_url.startswith("postgres://"):
+    # Fix for SQLAlchemy 1.4+ which requires 'postgresql://' instead of 'postgres://'
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url or ('sqlite:///' + os.path.join(basedir, 'diary.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
