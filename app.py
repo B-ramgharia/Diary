@@ -50,6 +50,14 @@ def login_required(f):
         if 'user_id' not in session:
             flash("Please log in to access this page.", "error")
             return redirect(url_for('login'))
+            
+        # Verify user still exists in DB (handles case where DB was reset or user deleted)
+        user = db.session.get(User, session['user_id'])
+        if not user:
+            session.clear()
+            flash("Session expired or user not found. Please login again.", "error")
+            return redirect(url_for('login'))
+            
         return f(*args, **kwargs)
     return decorated_function
 
@@ -109,7 +117,8 @@ def logout():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    user = User.query.get(session['user_id'])
+    # User is guaranteed to exist by the decorator
+    user = db.session.get(User, session['user_id'])
     entries = Entry.query.filter_by(owner_id=user.id).order_by(Entry.created_at.desc()).all()
     return render_template("dashboard.html", entries=entries)
 
@@ -164,7 +173,7 @@ def delete_entry(entry_id):
 @login_required
 def delete_account():
     password = request.form.get("password")
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
     
     if not bcrypt.check_password_hash(user.hashed_password, password):
         flash("Incorrect password. Account deletion failed.", "error")
