@@ -31,8 +31,25 @@ if db_url and db_url.startswith("postgres://"):
     # Fix for SQLAlchemy 1.4+ which requires 'postgresql://' instead of 'postgres://'
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-final_db_url = db_url or ('sqlite:///' + os.path.join(basedir, 'diary.db'))
-logger.info(f"Database URL type: {'PostgreSQL' if db_url else 'SQLite (fallback)'}")
+# Quick connectivity test for PostgreSQL before committing to it
+if db_url:
+    try:
+        import psycopg2
+        # Parse and test connection with a very short timeout
+        test_conn = psycopg2.connect(db_url, connect_timeout=3)
+        test_conn.close()
+        logger.info("PostgreSQL connection test: SUCCESS")
+        final_db_url = db_url
+    except Exception as e:
+        logger.error(f"PostgreSQL connection test FAILED: {e}")
+        logger.error("FALLING BACK TO SQLITE - your PostgreSQL database may have expired!")
+        logger.error("Create a new Render PostgreSQL and update DATABASE_URL.")
+        final_db_url = 'sqlite:///' + os.path.join(basedir, 'diary.db')
+        db_url = None  # Clear so engine options don't use PG-specific args
+else:
+    final_db_url = 'sqlite:///' + os.path.join(basedir, 'diary.db')
+
+logger.info(f"Database: {'PostgreSQL' if db_url else 'SQLite'}")
 logger.info(f"Python version: {sys.version}")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = final_db_url
@@ -45,8 +62,7 @@ engine_options = {
 }
 if db_url:
     engine_options['connect_args'] = {
-        'connect_timeout': 5,
-        'options': '-c statement_timeout=5000'
+        'connect_timeout': 3,
     }
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = engine_options
 
@@ -74,17 +90,10 @@ class Entry(db.Model):
 with app.app_context():
     try:
         db.create_all()
-        # Test the connection
-        db.session.execute(db.text('SELECT 1'))
-        logger.info("Database tables created and connection verified successfully.")
+        logger.info("Database tables created successfully.")
     except Exception as e:
-        logger.error(f"DATABASE ERROR: {e}")
-        logger.error("=" * 60)
-        logger.error("IMPORTANT: The database connection failed!")
-        logger.error("If using Render free PostgreSQL, it may have EXPIRED (90-day limit).")
-        logger.error("Create a new database and update DATABASE_URL in Render Environment.")
-        logger.error("=" * 60)
-        logger.error("App will still start — pages that don't need DB will work.")
+        logger.error(f"db.create_all() failed: {e}")
+        logger.error("App will start but database operations may fail.")
 
 # Auth Decorator
 def login_required(f):
