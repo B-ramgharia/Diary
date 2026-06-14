@@ -1,4 +1,6 @@
 import os
+import sys
+import logging
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -8,6 +10,14 @@ from dotenv import load_dotenv
 
 # Load local environment variables from .env file
 load_dotenv()
+
+# Configure logging for Render
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "your-premium-secret-key-12345")
@@ -21,8 +31,16 @@ if db_url and db_url.startswith("postgres://"):
     # Fix for SQLAlchemy 1.4+ which requires 'postgresql://' instead of 'postgres://'
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url or ('sqlite:///' + os.path.join(basedir, 'diary.db'))
+final_db_url = db_url or ('sqlite:///' + os.path.join(basedir, 'diary.db'))
+logger.info(f"Database URL type: {'PostgreSQL' if db_url else 'SQLite (fallback)'}")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = final_db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True,       # Test connections before using them
+    'pool_recycle': 300,         # Recycle connections every 5 minutes
+    'connect_args': {'connect_timeout': 10} if db_url else {}
+}
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -45,7 +63,13 @@ class Entry(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+        logger.info("Database tables created successfully.")
+    except Exception as e:
+        logger.error(f"Database initialization failed: {e}")
+        logger.error("The app will start but database operations may fail.")
+        logger.error("Make sure DATABASE_URL is set correctly in Render Environment Variables.")
 
 # Auth Decorator
 def login_required(f):
@@ -64,6 +88,15 @@ def login_required(f):
             
         return f(*args, **kwargs)
     return decorated_function
+
+# Health check endpoint for Render
+@app.route("/health")
+def health_check():
+    try:
+        db.session.execute(db.text('SELECT 1'))
+        return jsonify({"status": "healthy", "database": "connected"}), 200
+    except Exception as e:
+        return jsonify({"status": "unhealthy", "database": str(e)}), 500
 
 # Routes
 @app.route("/")
@@ -191,4 +224,5 @@ def delete_account():
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    port = int(os.getenv("PORT", 8000))
+    app.run(host="0.0.0.0", port=port, debug=False)
