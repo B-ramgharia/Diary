@@ -35,8 +35,8 @@ if db_url and db_url.startswith("postgres://"):
 if db_url:
     try:
         import psycopg2
-        # Parse and test connection with a very short timeout
-        test_conn = psycopg2.connect(db_url, connect_timeout=3)
+        # Parse and test connection with a safe timeout
+        test_conn = psycopg2.connect(db_url, connect_timeout=15)
         test_conn.close()
         logger.info("PostgreSQL connection test: SUCCESS")
         final_db_url = db_url
@@ -62,7 +62,7 @@ engine_options = {
 }
 if db_url:
     engine_options['connect_args'] = {
-        'connect_timeout': 3,
+        'connect_timeout': 15,
     }
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = engine_options
 
